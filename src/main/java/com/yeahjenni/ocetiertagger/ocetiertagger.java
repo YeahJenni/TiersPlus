@@ -283,7 +283,14 @@ public class ocetiertagger implements ClientModInitializer {
     }
 
     private static void checkForUpdates() {
-        String versionParam = "[\"%s\"]".formatted(SharedConstants.getGameVersion().getName());
+        String gameVersionName;
+        try {
+            gameVersionName = SharedConstants.getGameVersion().getName();
+        } catch (NoSuchMethodError e) {
+            gameVersionName = SharedConstants.getGameVersion().toString();
+        }
+
+        String versionParam = "[\"%s\"]".formatted(gameVersionName);
         String fullUrl = UPDATE_URL_FORMAT.formatted(URLEncoder.encode(versionParam, StandardCharsets.UTF_8));
 
         HttpRequest request = HttpRequest.newBuilder(URI.create(fullUrl)).GET().build();
